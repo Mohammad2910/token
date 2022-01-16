@@ -17,7 +17,7 @@ class TokenSetTest {
         set = new TokenSet();
         String token = generator.generate();
         set.add(token);
-        assertEquals(token, set.getToken());
+        assertEquals(token, set.getToken(0));
     }
 
     @Test
@@ -25,7 +25,7 @@ class TokenSetTest {
         set = new TokenSet();
         String token = generator.generate();
         set.add(token);
-        assertNotNull(set.getToken());
+        assertNotNull(set.getToken(0));
     }
 
     @Test
@@ -33,8 +33,18 @@ class TokenSetTest {
         set = new TokenSet();
         String token = generator.generate();
         set.add(token);
-        set.remove(0);
+        set.remove(token);
         assertNull(set.getToken(0));
 
+    }
+
+    @Test
+    void searchForToken(){
+        String token = "str2";
+        set = new TokenSet();
+        set.add("str1");
+        set.add(token);
+        set.add("str3");
+        assertTrue(set.searchForToken(token));
     }
 }

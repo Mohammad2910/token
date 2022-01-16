@@ -15,8 +15,7 @@ public class TokenGenerator {
      * @return token as a string
      */
     public String generate(){
-
-        byte bytes[] = new byte[32]; //todo how long should the token be ?
+        byte bytes[] = new byte[32];
         RNG.nextBytes(bytes);
         return bytes.toString();
     }
