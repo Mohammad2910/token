@@ -1,13 +1,15 @@
 package domain;
 
 import domain.model.TokenSet;
+import domain.ports.IStorage;
 
 public class TokenManager {
 
     private TokenGenerator generator = new TokenGenerator();
+    private IStorage storage;
 
     //has to communicate with storage
-    public boolean validateToken(String cid, String token){}
+    public boolean validateToken(String cid, String token){return false;}
 
     //this should generate a set of tokens specified by amount
     public void generatetokens(int amount){}
