@@ -4,6 +4,10 @@ import domain.TokenGenerator;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+
+/**
+ * @author Renjue and David
+ */
 class TokenGeneratorTest {
 
     TokenGenerator generator = new TokenGenerator();
