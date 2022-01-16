@@ -18,7 +18,7 @@ public class TokenManager {
     public TokenSet supplyTokens(){ return new TokenSet();}
 
     //this should contact storage to see how many tokens a given customer has
-    private int checkCustomerTokenset(String cid){return 0;}
+    private int checkCustomerTokensetSize(String cid){return 0;}
 
     //this should store tokens in the db (we dont know if we should just store one or multiple at a time)
     public void storeTokens(TokenSet tokens){}
