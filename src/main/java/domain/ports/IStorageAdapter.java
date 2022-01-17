@@ -2,7 +2,7 @@ package domain.ports;
 
 import domain.model.TokenSet;
 
-public interface IStorage {
+public interface IStorageAdapter {
 
     int storageCheckCustomerTokenSize(String cid);
     boolean storageCheckCustomerToken(String cid, String token);

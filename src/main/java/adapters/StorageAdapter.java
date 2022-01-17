@@ -1,9 +1,9 @@
 package adapters;
 
 import domain.model.TokenSet;
-import domain.ports.IStorage;
+import domain.ports.IStorageAdapter;
 
-public class Storage implements IStorage {
+public class StorageAdapter implements IStorageAdapter {
     @Override
     public int storageCheckCustomerTokenSize(String cid) {
         return 0;

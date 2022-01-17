@@ -1,12 +1,12 @@
 package domain;
 
 import domain.model.TokenSet;
-import domain.ports.IStorage;
+import domain.ports.IStorageAdapter;
 
 public class TokenManager {
 
     private TokenGenerator generator = new TokenGenerator();
-    private IStorage storage;
+    private IStorageAdapter storage;
 
     //has to communicate with storage
     public boolean validateToken(String cid, String token){return false;}
