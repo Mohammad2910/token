@@ -9,8 +9,19 @@ public class TokenManager {
     private TokenGenerator generator = new TokenGenerator();
     private IStorageAdapter adapter = new StorageAdapter();
 
-    //add a new customer with a new tokenset
-    public void addNewCustomer(String cid, String token){}
+    /**
+     * Method for adding a new customer with a specified tokenSet
+     * @param cid of the customer to add
+     * @param tokens that the customer possess
+     * @return boolean stating whether the customer is successfully added or not
+     */
+    public boolean addNewCustomer(String cid, TokenSet tokens){
+        if(adapter.getExternalStorage().getTokenHashMap().get(cid) == null){
+            adapter.storageAddNewCustomer(cid, tokens);
+            return true;
+        }
+        return false;
+    }
 
     //has to communicate with storage
     public boolean validateToken(String cid, String token){return false;}
