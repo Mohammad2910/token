@@ -4,6 +4,8 @@ import domain.model.TokenSet;
 import domain.ports.IStorageAdapter;
 
 public class StorageAdapter implements IStorageAdapter {
+
+
     @Override
     public int storageCheckCustomerTokenSize(String cid) {
         return 0;
