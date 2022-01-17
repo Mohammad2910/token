@@ -3,11 +3,14 @@ package domain;
 import adapters.StorageAdapter;
 import domain.model.TokenSet;
 import domain.ports.IStorageAdapter;
+import exceptions.AmountNotValid;
+import exceptions.NotFoundException;
 
 public class TokenManager {
 
     private TokenGenerator generator = new TokenGenerator();
     private IStorageAdapter adapter = new StorageAdapter();
+    private static TokenManager manager = new TokenManager();
 
     /**
      * Method for checking if the specified customer has had a tokenSet in storage
@@ -61,11 +64,47 @@ public class TokenManager {
         return set;
     }
 
-    //this should return a tokenset to the customer who requests some tokens
-    public TokenSet supplyTokens(){ return new TokenSet();}
+    /**
+     * Method for checking the amount of tokens that a specified customer has
+     * @param cid of the specified customer
+     * @return the integer amount of tokens that the customer possess
+     * @throws NotFoundException if the customer has not had a tokenSet in storage
+     */
+    public int checkCustomerTokenSetSize(String cid) throws NotFoundException {
+        if(adapter.getExternalStorage().getTokenHashMap().get(cid) == null){
+            throw new NotFoundException("Customer Not Found");
+        }
+        return adapter.storageCheckCustomerTokenSize(cid);
+    }
 
-    //this should contact storage to see how many tokens a given customer has
-    private int checkCustomerTokensetSize(String cid){return 0;}
+    //this should return a tokenSet to the customer who requests some tokens
+    public TokenSet supplyTokens(String cid, int amount) throws NotFoundException, AmountNotValid {
+
+         if(manager.checkCustomerTokenSet(cid)){  // the customer has had a tokenSet in storage
+            if(manager.checkCustomerTokenSetSize(cid) < 2){  // the customer has 0 or 1 token
+                if(manager.checkCustomerTokenSetSize(cid) + amount < 7){  // the maximal amount of tokens is 6
+                   adapter.getExternalStorage().addTokens(cid, manager.generateTokens(amount));
+                   return adapter.getExternalStorage().getTokenHashMap().get(cid);
+                }
+                else {
+                    throw new AmountNotValid("customer request too many tokens");
+                }
+            }
+            else {
+                throw new AmountNotValid("customer cannot request tokens");
+            }
+         }
+         else {
+             if(amount < 7){
+                manager.addNewCustomer(cid, manager.generateTokens(amount));
+                return adapter.getExternalStorage().getTokenHashMap().get(cid);
+            }
+             else {
+                 throw new AmountNotValid("customer request too many tokens");
+             }
+
+         }
+    }
 
     //this should store tokens in the db (we dont know if we should just store one or multiple at a time)
     public void storeTokens(String cid, TokenSet tokens){

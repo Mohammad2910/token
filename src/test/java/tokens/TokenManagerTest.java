@@ -4,6 +4,8 @@ import adapters.StorageAdapter;
 import domain.TokenGenerator;
 import domain.TokenManager;
 import domain.model.TokenSet;
+import exceptions.AmountNotValid;
+import exceptions.NotFoundException;
 import org.junit.jupiter.api.Test;
 import storage.TokenStorage;
 
@@ -56,7 +58,34 @@ class TokenManagerTest {
     }
 
     @Test
-    void supplyTokens(){
+    void checkCustomerTokenSetSize() throws NotFoundException {
+        //customer is in storage
+        String cid = "cid1";
+        TokenSet set = new TokenSet();
+        set.add(generator.generate());
+        set.add(generator.generate());
+        set.add(generator.generate());
+        set.add(generator.generate());
+        manager.addNewCustomer(cid, set);
+        assertEquals(4, manager.checkCustomerTokenSetSize(cid));
+
+        //customer is not in storage
+        try{
+            manager.checkCustomerTokenSetSize("cid2");
+        } catch (NotFoundException e){
+            assertTrue(e.getMessage().equals("Customer Not Found"));
+        }
+    }
+
+    @Test
+    void supplyTokens() throws NotFoundException, AmountNotValid {
+        String cid = "cid1";
+        TokenSet set = new TokenSet();
+        set.add(generator.generate());
+        manager.addNewCustomer(cid, set);
+        set = manager.supplyTokens(cid, 4);
+        assertEquals(5, set.numberOfTokens());
+
     }
 
     @Test
