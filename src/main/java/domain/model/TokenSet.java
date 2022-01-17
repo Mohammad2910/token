@@ -34,11 +34,25 @@ public class TokenSet {
     }
 
     /**
-     * Method for retrieving a token from the set
-     * @param index of the token to get
-     * @return the token
+     * Method for finding the index of a specified token
+     * @param token which index we wish to find
+     * @return the index of the specified token
      */
-    public String getToken(int index){return set[index];} //todo maybe we should get the token by token itself and not index
+    public int getTokenIndex(String token){
+
+        int indexOfToken = -1;
+        for(int i = 0; i < 6 ; i++){
+
+            if(set[i] != null){
+                if(set[i].equals(token)){
+                    indexOfToken = i;
+                }
+            }
+        }
+        return indexOfToken;
+    }
+
+    public String getToken(int index){return set[index];}
 
     /**
      * Method for checking if a specified token exists int the set
@@ -48,6 +62,18 @@ public class TokenSet {
     public boolean searchForToken(String token){
         for (String str: set){if(str.equals(token)){return true;}}
         return false;
+    }
+
+
+    public int numberOfTokens(){
+
+        int count = 0;
+        for (String token : set){
+            if(token != null){
+                count++;
+            }
+        }
+        return count;
     }
 
 }

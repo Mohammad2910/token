@@ -8,6 +8,9 @@ public class TokenManager {
     private TokenGenerator generator = new TokenGenerator();
     private IStorageAdapter storage;
 
+    //add a new customer with a new tokenset
+    public void addNewCustomer(String cid, String token){}
+
     //has to communicate with storage
     public boolean validateToken(String cid, String token){return false;}
 

@@ -47,4 +47,22 @@ class TokenSetTest {
         set.add("str3");
         assertTrue(set.searchForToken(token));
     }
+
+    @Test
+    void numberOfTokens(){
+        set = new TokenSet();
+        set.add("str1");
+        set.add("str2");
+        set.add("str3");
+        assertEquals(3, set.numberOfTokens());
+    }
+
+    @Test
+    void getTokenIndex(){
+        set = new TokenSet();
+        set.add("str1");
+        set.add("str2");
+        set.add("str3");
+        assertEquals(2, set.getTokenIndex("str3"));
+    }
 }

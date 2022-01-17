@@ -23,4 +23,9 @@ public class StorageAdapter implements IStorageAdapter {
     public void storageConsumeToken(String cid, String token) {
 
     }
+
+    @Override
+    public void storageAddNewCustomer(String cid, TokenSet tokens) {
+
+    }
 }

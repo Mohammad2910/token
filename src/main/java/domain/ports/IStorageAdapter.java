@@ -8,5 +8,6 @@ public interface IStorageAdapter {
     boolean storageCheckCustomerToken(String cid, String token);
     void storageStoreTokens(TokenSet tokens);
     void storageConsumeToken(String cid, String token);
+    void storageAddNewCustomer(String cid, TokenSet tokens);
 
 }
