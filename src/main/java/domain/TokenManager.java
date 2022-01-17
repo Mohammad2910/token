@@ -1,12 +1,13 @@
 package domain;
 
+import adapters.StorageAdapter;
 import domain.model.TokenSet;
 import domain.ports.IStorageAdapter;
 
 public class TokenManager {
 
     private TokenGenerator generator = new TokenGenerator();
-    private IStorageAdapter storage;
+    private IStorageAdapter adapter = new StorageAdapter();
 
     //add a new customer with a new tokenset
     public void addNewCustomer(String cid, String token){}
