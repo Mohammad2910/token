@@ -53,6 +53,16 @@ class TokenStorageTest {
 
     @Test
     void removeTokenFromCustomer() {
+
+        TokenSet tokenSet = new TokenSet();
+        TokenStorage storage = new TokenStorage();
+        String cid = "cid1";
+        String token = "token1";
+        tokenSet.add(token);
+        storage.addNewEntry(cid, tokenSet);
+        storage.removeTokenFromCustomer(cid, token);
+        assertFalse(storage.isCustomerTokenValid(cid, token));
+
     }
 
     @Test
@@ -71,6 +81,20 @@ class TokenStorageTest {
 
     @Test
     void isCustomerTokenValid() {
+
+        TokenSet tokenSet = new TokenSet();
+        TokenStorage storage = new TokenStorage();
+        String cid1 = "cid1";
+        String token = generator.generate();
+
+        tokenSet.add(generator.generate());
+        tokenSet.add(token);
+        tokenSet.add(generator.generate());
+        storage.addNewEntry(cid1, tokenSet);
+
+        assertTrue(storage.isCustomerTokenValid(cid1, token));
+
+
     }
 
     @Test

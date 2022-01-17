@@ -52,6 +52,12 @@ public class TokenSet {
         return indexOfToken;
     }
 
+
+    /**
+     * Method that return a token specified by its index in the TokenSet
+     * @param index of the token
+     * @return token
+     */
     public String getToken(int index){return set[index];}
 
     /**
@@ -60,11 +66,18 @@ public class TokenSet {
      * @return boolean stating if it was found or not
      */
     public boolean searchForToken(String token){
-        for (String str: set){if(str.equals(token)){return true;}}
+        for (String str: set){
+            if(str != null){
+                if(str.equals(token)){return true;}}
+            }
         return false;
     }
 
 
+    /**
+     * Method for finding the number of tokens in a tokenSet
+     * @return an integer representing the number of tokens in the tokenSet
+     */
     public int numberOfTokens(){
 
         int count = 0;
@@ -75,5 +88,11 @@ public class TokenSet {
         }
         return count;
     }
+
+    /**
+     * Getter for the actual set
+     * @return String array of tokens
+     */
+    public String[] getSet(){return set;}
 
 }

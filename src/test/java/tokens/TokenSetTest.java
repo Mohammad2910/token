@@ -65,4 +65,10 @@ class TokenSetTest {
         set.add("str3");
         assertEquals(2, set.getTokenIndex("str3"));
     }
+
+    @Test
+    void getSet(){
+        set = new TokenSet();
+        assertNotNull(set.getSet());
+    }
 }

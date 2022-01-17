@@ -14,18 +14,29 @@ public class TokenStorage {
         tokenHashMap.put(cid, tokens);
     }
 
+    /**
+     *
+     * @param cid
+     * @param tokens
+     */
     //adding new tokens to an already existing customer
     public void addTokens(String cid, TokenSet tokens){
 
         TokenSet tokenSetFromStorage = tokenHashMap.get(cid);
-        //tokenSetFromStorage.add(tokens.);
-
-
+        for (String token: tokens.getSet()) {tokenSetFromStorage.add(token);}
     }
 
     //removes a token from
-    public void removeTokenFromCustomer(){}
+    public void removeTokenFromCustomer(String cid, String token){
+        TokenSet set = tokenHashMap.get(cid);
+        set.remove(token);
+    }
 
+    /**
+     *
+     * @param cid
+     * @return
+     */
     //return the size of a specified customer's tokenset
     public int getCustomerTokenSetSize(String cid){
 
@@ -33,9 +44,22 @@ public class TokenStorage {
        return tokenSet.numberOfTokens();
     }
 
+    /**
+     *
+     * @param cid
+     * @param token
+     * @return
+     */
     //checks if a specified token exists
-    public boolean isCustomerTokenValid(String cid, String token){return false;}
+    public boolean isCustomerTokenValid(String cid, String token){
+        TokenSet set = tokenHashMap.get(cid);
+        return set.searchForToken(token);
+    }
 
+    /**
+     *
+     * @return
+     */
     //getter for the whole hashmap (storage)
     public HashMap<String, TokenSet> getTokenHashMap(){return tokenHashMap;}
 
