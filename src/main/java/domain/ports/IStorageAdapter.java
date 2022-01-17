@@ -1,6 +1,7 @@
 package domain.ports;
 
 import domain.model.TokenSet;
+import storage.ITokenStorage;
 
 /**
  * Interface that describes what methods that should be implemented by an adapter
@@ -26,7 +27,7 @@ public interface IStorageAdapter {
      * Method for storing a tokenSet
      * @param tokens to store
      */
-    void storageStoreTokens(TokenSet tokens);
+    void storageStoreTokens(String cid, TokenSet tokens);
 
     /**
      * Method for consuming (removing) a specifid token belonging to a specified customer
@@ -41,5 +42,7 @@ public interface IStorageAdapter {
      * @param tokens to add
      */
     void storageAddNewCustomer(String cid, TokenSet tokens);
+
+    ITokenStorage getExternalStorage();
 
 }
