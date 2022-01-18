@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class TokenManagerTest {
 
     TokenGenerator generator = new TokenGenerator();
-    TokenManager manager = new TokenManager();
+    TokenManager manager = TokenManager.getManager();
 
     @Test
     void checkCustomerTokenSet(){
@@ -47,7 +47,9 @@ class TokenManagerTest {
         set.add("token3");
         manager.addNewCustomer(cid, set);
         assertTrue(manager.validateToken(cid, token));
+        //token does not match
         assertFalse(manager.validateToken(cid, "token4"));
+        //customer does not exist in storage
         assertFalse(manager.validateToken("cid2", token));
     }
 
@@ -83,17 +85,20 @@ class TokenManagerTest {
         TokenSet set = new TokenSet();
         set.add(generator.generate());
         manager.addNewCustomer(cid, set);
-        set = manager.supplyTokens(cid, 4);
-        assertEquals(5, set.numberOfTokens());
+
+        TokenSet new_set = manager.supplyTokens(cid, 3);
+        assertEquals(4, new_set.numberOfTokens());
 
     }
 
     @Test
-    void storeTokens(){
+    void storeTokens() throws NotFoundException {
         String cid = "cid1";
         TokenSet set = new TokenSet();
+        manager.addNewCustomer(cid, set);
+        set.add("token1");
         manager.storeTokens(cid, set);
-        // assertNotNull();
+        assertEquals(1, manager.checkCustomerTokenSetSize(cid));
 
     }
 

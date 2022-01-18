@@ -12,6 +12,10 @@ public class TokenManager {
     private IStorageAdapter adapter = new StorageAdapter();
     private static TokenManager manager = new TokenManager();
 
+    private TokenManager(){}
+
+    public static TokenManager getManager(){return manager;}
+
     /**
      * Method for checking if the specified customer has had a tokenSet in storage
      * @param cid of the specified customer
@@ -52,7 +56,7 @@ public class TokenManager {
     }
 
     /**
-     * Method for generating a tokenSet specified by amount
+     * Method for generating a tokenSet specified by amount without any checking
      * @param amount of tokens to be generated
      * @return a tokenSet specified by amount
      */
@@ -77,14 +81,20 @@ public class TokenManager {
         return adapter.storageCheckCustomerTokenSize(cid);
     }
 
-    //this should return a tokenSet to the customer who requests some tokens
+    /**
+     * Method for returning the updated tokenSet after a specified customer's request
+     * @param cid of the specified customer
+     * @param amount that the customer request
+     * @return
+     * @throws NotFoundException
+     * @throws AmountNotValid if the customer cannot request the specified amount
+     */
     public TokenSet supplyTokens(String cid, int amount) throws NotFoundException, AmountNotValid {
 
          if(manager.checkCustomerTokenSet(cid)){  // the customer has had a tokenSet in storage
             if(manager.checkCustomerTokenSetSize(cid) < 2){  // the customer has 0 or 1 token
-                if(manager.checkCustomerTokenSetSize(cid) + amount < 7){  // the maximal amount of tokens is 6
-                   adapter.getExternalStorage().addTokens(cid, manager.generateTokens(amount));
-                   return adapter.getExternalStorage().getTokenHashMap().get(cid);
+                if(manager.checkCustomerTokenSetSize(cid) + amount < 7){  // the maximal amount of tokens should not exceed 6
+                   return adapter.getExternalStorage().addTokens(cid, manager.generateTokens(amount));
                 }
                 else {
                     throw new AmountNotValid("customer request too many tokens");
@@ -94,15 +104,15 @@ public class TokenManager {
                 throw new AmountNotValid("customer cannot request tokens");
             }
          }
-         else {
+         else {  // the customer does not have a tokenSet in storage
              if(amount < 7){
+                 // add a new customer in storage
                 manager.addNewCustomer(cid, manager.generateTokens(amount));
                 return adapter.getExternalStorage().getTokenHashMap().get(cid);
             }
              else {
                  throw new AmountNotValid("customer request too many tokens");
              }
-
          }
     }
 
@@ -113,8 +123,6 @@ public class TokenManager {
 
     //should remove a single token from the storage.
     private void consumeToken(String cid, String Token){}
-
-
 
 
 }

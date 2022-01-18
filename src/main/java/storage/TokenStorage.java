@@ -15,10 +15,15 @@ public class TokenStorage implements ITokenStorage{
 
         tokenHashMap.put(cid, tokens);
     }
-    public void addTokens(String cid, TokenSet tokens){
+    public TokenSet addTokens(String cid, TokenSet tokens){
 
         TokenSet tokenSetFromStorage = tokenHashMap.get(cid);
-        for (String token: tokens.getSet()) {tokenSetFromStorage.add(token);}
+        for (String token: tokens.getSet()) {
+            if(token != null){
+                tokenSetFromStorage.add(token);
+            }
+        }
+        return tokenSetFromStorage;
     }
     public void removeTokenFromCustomer(String cid, String token){
         TokenSet set = tokenHashMap.get(cid);

@@ -45,9 +45,11 @@ class TokenStorageTest {
         //new tokens to be added
         tokenSet2.add(generator.generate());
         tokenSet2.add(generator.generate());
-        storage.addTokens(cid, tokenSet2);
 
-        //test to see if the additional tokens to the already existing tokenset
+        //test to see the return tokenSet has added up the new tokenSet with the already existing tokenSet
+        assertEquals(3, storage.addTokens(cid, tokenSet2).numberOfTokens());
+
+        //test to see if the additional tokens to the already existing tokenSet
         assertEquals(3, storage.getCustomerTokenSetSize(cid));
     }
 

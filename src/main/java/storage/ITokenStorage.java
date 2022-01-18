@@ -21,7 +21,7 @@ public interface ITokenStorage {
      * @param cid of the customer
      * @param tokens to add to the already existing tokenSet
      */
-    public void addTokens(String cid, TokenSet tokens);
+    public TokenSet addTokens(String cid, TokenSet tokens);
 
 
     /**
