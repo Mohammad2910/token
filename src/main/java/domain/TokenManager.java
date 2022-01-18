@@ -126,7 +126,11 @@ public class TokenManager {
          }
     }
 
-    //this should store tokens in the db (we dont know if we should just store one or multiple at a time)
+    /**
+     * Method for storing a new TokenSet with specified amount of tokens in already existing storage
+     * @param cid of the specified customer
+     * @param tokens that need to be stored in storage
+     */
     public void storeTokens(String cid, TokenSet tokens){
         adapter.storageStoreTokens(cid, tokens);
     }

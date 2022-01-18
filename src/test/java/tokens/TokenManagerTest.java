@@ -94,11 +94,14 @@ class TokenManagerTest {
     @Test
     void storeTokens() throws NotFoundException {
         String cid = "cid1";
-        TokenSet set = new TokenSet();
-        manager.addNewCustomer(cid, set);
-        set.add("token1");
-        manager.storeTokens(cid, set);
-        assertEquals(1, manager.checkCustomerTokenSetSize(cid));
+        TokenSet set1 = new TokenSet();
+        set1.add(generator.generate());
+        manager.addNewCustomer(cid, set1);
+
+        TokenSet set2 = manager.generateTokens(3);
+
+        manager.storeTokens(cid, set2);
+        assertEquals(4, manager.checkCustomerTokenSetSize(cid));
     }
 
     @Test
