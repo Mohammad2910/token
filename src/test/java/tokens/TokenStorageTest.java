@@ -100,6 +100,18 @@ class TokenStorageTest {
     }
 
     @Test
+    void isCustomerCreated(){
+
+        TokenSet tokenSet = new TokenSet();
+        TokenStorage storage = new TokenStorage();
+        String cid1 = "cid1";
+        storage.addNewEntry(cid1, tokenSet);
+
+        assertTrue(storage.isCustomerCreated(cid1));
+
+    }
+
+    @Test
     void getTokenHashMap(){
         TokenStorage storage = new TokenStorage();
         assertNotNull(storage.getTokenHashMap());

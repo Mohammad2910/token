@@ -17,13 +17,13 @@ class TokenManagerTest {
     void addNewCustomer() {
         String cid = "cid1";
         TokenSet set = new TokenSet();
+        serviceProvider.getTokenManager().addNewCustomer(cid, set);
 
         //customer is stored
         assertTrue(serviceProvider.getTokenManager().isCustomerCreatedInStorage(cid));
         //customer is not stored
         assertFalse(serviceProvider.getTokenManager().isCustomerCreatedInStorage("cid2"));
     }
-
 
     @Test
     void validateToken() {
@@ -92,7 +92,7 @@ class TokenManagerTest {
     }
 
     @Test
-    void storeTokens() throws NotFoundException {
+    void storeTokens() {
         String cid = "cid1";
         TokenSet set1 = new TokenSet();
         set1.add(tokenGenerator.generate());

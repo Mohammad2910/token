@@ -2,8 +2,7 @@ package domain;
 
 import domain.model.TokenSet;
 import domain.ports.IStorageAdapter;
-import exceptions.AmountNotValid;
-import exceptions.NotFoundException;
+import exceptions.AmountNotValidException;
 
 /**
  * Class for managing tokens
@@ -28,6 +27,13 @@ public class TokenManager {
     public void addNewCustomer(String cid, TokenSet tokens) {
         iStorageAdapter.storageAddNewCustomer(cid, tokens);
     }
+
+    /**
+     *
+     * @param cid
+     * @return
+     */
+    public boolean isCustomerCreatedInStorage(String cid){return iStorageAdapter.isCustomerCreatedInStorage(cid);}
 
     /**
      * Method for validating a specified customer with a specified token
