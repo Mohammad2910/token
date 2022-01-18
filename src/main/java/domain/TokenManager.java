@@ -6,14 +6,24 @@ import domain.ports.IStorageAdapter;
 import exceptions.AmountNotValid;
 import exceptions.NotFoundException;
 
+/**
+ * Class for managing tokens
+ * @author Renjue, Christian and David
+ */
 public class TokenManager {
 
     private TokenGenerator generator = new TokenGenerator();
     private IStorageAdapter adapter = new StorageAdapter();
+
+    //--------Singleton pattern-----------------------------
     private static TokenManager manager = new TokenManager();
 
     private TokenManager(){}
 
+    /**
+     * Method for getting the instance of the class
+     * @return the instance of the class
+     */
     public static TokenManager getManager(){return manager;}
 
     /**

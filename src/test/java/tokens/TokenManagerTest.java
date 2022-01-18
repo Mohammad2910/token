@@ -86,8 +86,8 @@ class TokenManagerTest {
         set.add(generator.generate());
         manager.addNewCustomer(cid, set);
 
-        TokenSet new_set = manager.supplyTokens(cid, 3);
-        assertEquals(4, new_set.numberOfTokens());
+        TokenSet new_set = manager.supplyTokens(cid, 4);
+        assertEquals(5, new_set.numberOfTokens());
 
     }
 
@@ -99,7 +99,6 @@ class TokenManagerTest {
         set.add("token1");
         manager.storeTokens(cid, set);
         assertEquals(1, manager.checkCustomerTokenSetSize(cid));
-
     }
 
     @Test
