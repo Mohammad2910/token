@@ -2,7 +2,9 @@ package tokens;
 
 import domain.TokenGenerator;
 import domain.model.TokenSet;
-import exceptions.AmountNotValidException;
+import exceptions.TokenOutOfBoundsException;
+import exceptions.TokensEnoughException;
+import exceptions.TokenNotValidException;
 import org.junit.jupiter.api.Test;
 import controller.ServiceProvider;
 
@@ -20,82 +22,95 @@ class TokenManagerTest {
         serviceProvider.getTokenManager().addNewCustomer(cid, set);
 
         //customer is stored
-        assertTrue(serviceProvider.getTokenManager().isCustomerCreatedInStorage(cid));
+        assertTrue(serviceProvider.getTokenManager().customerExistsInStorage(cid));
         //customer is not stored
-        assertFalse(serviceProvider.getTokenManager().isCustomerCreatedInStorage("cid2"));
+        assertFalse(serviceProvider.getTokenManager().customerExistsInStorage("cid2"));
     }
 
     @Test
-    void validateToken() {
+    void validateToken() throws TokenNotValidException {
         String cid = "cid1";
         String token = "token2";
         TokenSet set = new TokenSet();
-        set.add("token1");
-        set.add(token);
-        set.add("token3");
+        set.addToken("token1");
+        set.addToken(token);
+        set.addToken("token3");
         serviceProvider.getTokenManager().addNewCustomer(cid, set);
         assertTrue(serviceProvider.getTokenManager().validateToken(cid, token));
         //token does not match
-        assertFalse(serviceProvider.getTokenManager().validateToken(cid, "token4"));
+        assertThrows(TokenNotValidException.class, () -> serviceProvider.getTokenManager().validateToken(cid, "token4"));
     }
 
     @Test
     void generateToken() {
         int amount = 3;
-        assertEquals(3, serviceProvider.getTokenManager().generateTokens(amount).numberOfTokens());
+        assertEquals(3, serviceProvider.getTokenManager().generateTokens(amount).findNumberOfTokens());
     }
 
     @Test
     void checkCustomerTokenSetSize() {
-        //customer is in storage
         String cid = "cid1";
         TokenSet set = new TokenSet();
-        set.add(tokenGenerator.generate());
-        set.add(tokenGenerator.generate());
-        set.add(tokenGenerator.generate());
-        set.add(tokenGenerator.generate());
+        set.addToken(tokenGenerator.generate());
+        set.addToken(tokenGenerator.generate());
+        set.addToken(tokenGenerator.generate());
+        set.addToken(tokenGenerator.generate());
         serviceProvider.getTokenManager().addNewCustomer(cid, set);
         assertEquals(4, serviceProvider.getTokenManager().checkCustomerTokenSetSize(cid));
     }
 
+    /*
+     Case 1: Customer requests tokens when:
+            - having 0 or 1 token left
+            - requested amount of tokens is sufficient
+     */
     @Test
-    void supplyTokens() throws AmountNotValidException {
-        // case1: customer has existed in storage, request tokens when there is 0 or 1 token left and the resulted amount of tokens will not exceed the maximum
-        String cid1 = "cid1";
-        TokenSet set1 = new TokenSet();
-        set1.add(tokenGenerator.generate());
-        serviceProvider.getTokenManager().addNewCustomer(cid1, set1);
-        serviceProvider.getTokenManager().supplyTokens(cid1, 4);
-        assertEquals(5, serviceProvider.getTokenManager().checkCustomerTokenSetSize(cid1));
+    void supplyTokens_Success() {
+        try {
+            String cid1 = "cid1";
+            TokenSet set1 = new TokenSet();
+            set1.addToken(tokenGenerator.generate());
+            serviceProvider.getTokenManager().addNewCustomer(cid1, set1);
+            serviceProvider.getTokenManager().supplyTokens(cid1, 4);
+            assertEquals(5, serviceProvider.getTokenManager().checkCustomerTokenSetSize(cid1));
 
-        // case2: customer has existed in storage, request tokens when there is 0 or 1 token left but request too many tokens
+        } catch (TokenOutOfBoundsException | TokensEnoughException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*
+     Case 2: Customer requests tokens when:
+            - having 0 or 1 tokens left
+            - requested amount of tokens exceeds max. limit of tokens.
+     */
+    @Test
+    void supplyTokens_ThrowsTokenOutOfBoundsException() {
         String cid2 = "cid2";
         TokenSet set2 = new TokenSet();
         serviceProvider.getTokenManager().addNewCustomer(cid2, set2);
-        try {
-            serviceProvider.getTokenManager().supplyTokens(cid2, 7);
-        } catch (AmountNotValidException e) {
-            assertTrue(e.getMessage().equals("customer request too many tokens"));
-        }
+        assertThrows(TokenOutOfBoundsException.class, () -> serviceProvider.getTokenManager().supplyTokens(cid2, 7));
+    }
 
-        // case3: customer has existed in storage but request tokens when there is more than 1 token left
+    /*
+     Case 3: Customer requests tokens when
+            - having more than 1 token left.
+     */
+    @Test
+    void supplyTokens_ThrowsTokensEnoughException() {
         String cid3 = "cid3";
         TokenSet set3 = new TokenSet();
-        set3.add(tokenGenerator.generate());
-        set3.add(tokenGenerator.generate());
+        set3.addToken(tokenGenerator.generate());
+        set3.addToken(tokenGenerator.generate());
         serviceProvider.getTokenManager().addNewCustomer(cid3, set3);
-        try {
-            serviceProvider.getTokenManager().supplyTokens(cid3, 1);
-        } catch (AmountNotValidException e2) {
-            assertTrue(e2.getMessage().equals("customer cannot request tokens"));
-        }
+        assertThrows(TokensEnoughException.class, () -> serviceProvider.getTokenManager().supplyTokens(cid3, 1));
     }
 
     @Test
     void storeTokens() {
         String cid = "cid1";
         TokenSet set1 = new TokenSet();
-        set1.add(tokenGenerator.generate());
+        set1.addToken(tokenGenerator.generate());
         serviceProvider.getTokenManager().addNewCustomer(cid, set1);
 
         TokenSet set2 = serviceProvider.getTokenManager().generateTokens(3);
@@ -110,8 +125,8 @@ class TokenManagerTest {
         TokenSet set = new TokenSet();
         String token1 = tokenGenerator.generate();
         String token2 = tokenGenerator.generate();
-        set.add(token1);
-        set.add(token2);
+        set.addToken(token1);
+        set.addToken(token2);
         serviceProvider.getTokenManager().addNewCustomer(cid, set);
         assertEquals(2, serviceProvider.getTokenManager().checkCustomerTokenSetSize(cid));
         serviceProvider.getTokenManager().consumeToken(cid, token1);

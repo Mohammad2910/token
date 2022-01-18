@@ -11,34 +11,39 @@ public class TokenStorage implements ITokenStorage{
 
     HashMap<String, TokenSet> tokenHashMap = new HashMap<>();
 
-    public void addNewEntry(String cid, TokenSet tokens){
-
+    @Override
+    public void addNewEntryToStorage(String cid, TokenSet tokens){
         tokenHashMap.put(cid, tokens);
     }
-    public TokenSet addTokens(String cid, TokenSet tokens){
-
+    @Override
+    public TokenSet addTokensToCustomer(String cid, TokenSet tokens){
         TokenSet tokenSetFromStorage = tokenHashMap.get(cid);
-        for (String token: tokens.getSet()) {
+        for (String token: tokens.getTokenSet()) {
             if(token != null){
-                tokenSetFromStorage.add(token);
+                tokenSetFromStorage.addToken(token);
             }
         }
         return tokenSetFromStorage;
     }
+
+    @Override
     public void removeTokenFromCustomer(String cid, String token){
         TokenSet set = tokenHashMap.get(cid);
-        set.remove(token);
+        set.removeToken(token);
     }
-    public int getCustomerTokenSetSize(String cid){
 
+    @Override
+    public int getCustomerTokenSetSize(String cid){
        TokenSet tokenSet = tokenHashMap.get(cid);
-       return tokenSet.numberOfTokens();
+       return tokenSet.findNumberOfTokens();
     }
+
 
     //todo: throw an exception here if customer token is not valid
+    @Override
     public boolean isCustomerTokenValid(String cid, String token){
         TokenSet set = tokenHashMap.get(cid);
-        return set.searchForToken(token);
+        return set.findToken(token);
     }
 
     @Override
@@ -46,5 +51,6 @@ public class TokenStorage implements ITokenStorage{
         return tokenHashMap.get(cid) != null;
     }
 
-    public HashMap<String, TokenSet> getTokenHashMap(){return tokenHashMap;}
+    @Override
+    public HashMap<String, TokenSet> getAllTokens(){return tokenHashMap;}
 }

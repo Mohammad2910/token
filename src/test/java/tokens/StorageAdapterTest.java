@@ -20,9 +20,9 @@ class StorageAdapterTest {
     void storageCheckCustomerTokenSize() {
         String cid = "cid1";
         TokenSet set = new TokenSet();
-        set.add(generator.generate());
-        serviceProvider.getStorageAdapter().storageAddNewCustomer(cid, set);
-        assertEquals(1, serviceProvider.getStorageAdapter().storageCheckCustomerTokenSize(cid));
+        set.addToken(generator.generate());
+        serviceProvider.getStorageAdapter().addNewCustomer(cid, set);
+        assertEquals(1, serviceProvider.getStorageAdapter().getNumberOfTokens(cid));
     }
 
     @Test
@@ -30,9 +30,9 @@ class StorageAdapterTest {
         String cid = "cid1";
         String token = "token1";
         TokenSet set = new TokenSet();
-        set.add(token);
-        serviceProvider.getStorageAdapter().storageAddNewCustomer(cid, set);
-        assertTrue(serviceProvider.getStorageAdapter().storageCheckCustomerToken(cid,token));
+        set.addToken(token);
+        serviceProvider.getStorageAdapter().addNewCustomer(cid, set);
+        assertTrue(serviceProvider.getStorageAdapter().hasToken(cid,token));
     }
 
     @Test
@@ -40,17 +40,17 @@ class StorageAdapterTest {
         //add one initial tokenSet with one single token
         String cid = "cid1";
         TokenSet set = new TokenSet();
-        set.add(generator.generate());
-        serviceProvider.getStorageAdapter().storageAddNewCustomer(cid, set);
+        set.addToken(generator.generate());
+        serviceProvider.getStorageAdapter().addNewCustomer(cid, set);
 
         //now we add a new tokenset to the initial tokenSet
         TokenSet newSet = new TokenSet();
-        newSet.add(generator.generate());
-        newSet.add(generator.generate());
-        serviceProvider.getStorageAdapter().storageStoreTokens(cid, newSet);
+        newSet.addToken(generator.generate());
+        newSet.addToken(generator.generate());
+        serviceProvider.getStorageAdapter().storeToken(cid, newSet);
 
         //now there should be a total of 3 tokens in the tokenSet
-        assertEquals(3, serviceProvider.getStorageAdapter().storageCheckCustomerTokenSize(cid));
+        assertEquals(3, serviceProvider.getStorageAdapter().getNumberOfTokens(cid));
     }
 
     @Test
@@ -60,13 +60,13 @@ class StorageAdapterTest {
         String token1 = "token1";
         String token2 = "token2";
         TokenSet set = new TokenSet();
-        set.add(token1);
-        set.add(token2);
-        serviceProvider.getStorageAdapter().storageAddNewCustomer(cid, set);
+        set.addToken(token1);
+        set.addToken(token2);
+        serviceProvider.getStorageAdapter().addNewCustomer(cid, set);
 
         //now we consume token2 and checks that it was removed
-        serviceProvider.getStorageAdapter().storageConsumeToken(cid, token2);
-        assertFalse(serviceProvider.getStorageAdapter().storageCheckCustomerToken(cid, token2));
+        serviceProvider.getStorageAdapter().consumeToken(cid, token2);
+        assertFalse(serviceProvider.getStorageAdapter().hasToken(cid, token2));
 
     }
 
@@ -74,8 +74,8 @@ class StorageAdapterTest {
     void storageAddNewCustomer() {
         String cid = "cid1";
         TokenSet set = new TokenSet();
-        set.add(generator.generate());
-        serviceProvider.getStorageAdapter().storageAddNewCustomer(cid, set);
+        set.addToken(generator.generate());
+        serviceProvider.getStorageAdapter().addNewCustomer(cid, set);
         //call method from IStorageAdapter that returns a map or cid?
         assertTrue(serviceProvider.getStorageAdapter().isCustomerCreatedInStorage(cid));
     }

@@ -6,16 +6,16 @@ package domain.model;
  */
 public class TokenSet {
 
-    private String set[] = new String[6];
+    private String[] tokenSet = new String[6];
 
     /**
      * Method for adding a token to the set
      * @param token to be added
      */
-    public void add(String token){
+    public void addToken(String token){
         for(int i = 0; i < 6; i++){
-            if(set[i] == null){
-                set[i] = token;
+            if(tokenSet[i] == null){
+                tokenSet[i] = token;
                 break;}
         }
     }
@@ -24,10 +24,10 @@ public class TokenSet {
      * Method for removing a specified token from the set
      * @param token the token to remove from the set
      */
-    public void remove(String token){
+    public void removeToken(String token){
        for(int i = 0; i < 6; i++){
-           if(set[i].equals(token)){
-               set[i] = null;
+           if(tokenSet[i].equals(token)){
+               tokenSet[i] = null;
                break;
            }
        }
@@ -43,8 +43,8 @@ public class TokenSet {
         int indexOfToken = -1;
         for(int i = 0; i < 6 ; i++){
 
-            if(set[i] != null){
-                if(set[i].equals(token)){
+            if(tokenSet[i] != null){
+                if(tokenSet[i].equals(token)){
                     indexOfToken = i;
                 }
             }
@@ -58,15 +58,15 @@ public class TokenSet {
      * @param index of the token
      * @return token
      */
-    public String getToken(int index){return set[index];}
+    public String getToken(int index){return tokenSet[index];}
 
     /**
      * Method for checking if a specified token exists int the set
      * @param token to search for
      * @return boolean stating if it was found or not
      */
-    public boolean searchForToken(String token){
-        for (String str: set){
+    public boolean findToken(String token){
+        for (String str: tokenSet){
             if(str != null){
                 if(str.equals(token)){return true;}}
             }
@@ -78,10 +78,10 @@ public class TokenSet {
      * Method for finding the number of tokens in a tokenSet
      * @return an integer representing the number of tokens in the tokenSet
      */
-    public int numberOfTokens(){
+    public int findNumberOfTokens(){
 
         int count = 0;
-        for (String token : set){
+        for (String token : tokenSet){
             if(token != null){
                 count++;
             }
@@ -93,6 +93,6 @@ public class TokenSet {
      * Getter for the actual set
      * @return String array of tokens
      */
-    public String[] getSet(){return set;}
+    public String[] getTokenSet(){return tokenSet;}
 
 }
