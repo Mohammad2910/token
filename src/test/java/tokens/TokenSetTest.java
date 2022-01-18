@@ -46,6 +46,7 @@ class TokenSetTest {
         set.add(token);
         set.add("str3");
         assertTrue(set.searchForToken(token));
+        assertFalse(set.searchForToken("str4"));
     }
 
     @Test
