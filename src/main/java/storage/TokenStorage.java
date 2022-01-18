@@ -34,9 +34,17 @@ public class TokenStorage implements ITokenStorage{
        TokenSet tokenSet = tokenHashMap.get(cid);
        return tokenSet.numberOfTokens();
     }
+
+    //todo: throw an exception here if customer token is not valid
     public boolean isCustomerTokenValid(String cid, String token){
         TokenSet set = tokenHashMap.get(cid);
         return set.searchForToken(token);
     }
+
+    @Override
+    public boolean isCustomerCreated(String cid) {
+        return tokenHashMap.get(cid) != null;
+    }
+
     public HashMap<String, TokenSet> getTokenHashMap(){return tokenHashMap;}
 }

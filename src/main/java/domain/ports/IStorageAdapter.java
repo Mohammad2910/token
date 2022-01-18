@@ -24,6 +24,13 @@ public interface IStorageAdapter {
     boolean storageCheckCustomerToken(String cid, String token);
 
     /**
+     * Method for checking if customer is created in storage
+     * @param cid of the specified customer
+     * @return boolean stating if the customer exists
+     */
+    boolean isCustomerCreatedInStorage(String cid);
+
+    /**
      * Method for storing a tokenSet
      * @param tokens to store
      */
@@ -43,6 +50,8 @@ public interface IStorageAdapter {
      */
     void storageAddNewCustomer(String cid, TokenSet tokens);
 
-    ITokenStorage getExternalStorage();
+
+
+    //ITokenStorage getExternalStorage();
 
 }

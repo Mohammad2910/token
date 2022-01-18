@@ -3,42 +3,48 @@ package adapters;
 import domain.model.TokenSet;
 import domain.ports.IStorageAdapter;
 import storage.ITokenStorage;
-import storage.TokenStorage;
 
 public class StorageAdapter implements IStorageAdapter {
 
-    private ITokenStorage externalStorage = new TokenStorage();
+    private ITokenStorage tokenStorage;
+
+    public StorageAdapter(ITokenStorage tokenStorage) {
+        this.tokenStorage = tokenStorage;
+    }
 
     @Override
     public int storageCheckCustomerTokenSize(String cid) {
-        return externalStorage.getCustomerTokenSetSize(cid);
+        return tokenStorage.getCustomerTokenSetSize(cid);
     }
 
     @Override
     public boolean storageCheckCustomerToken(String cid, String token) {
-        return externalStorage.isCustomerTokenValid(cid, token);
+        return tokenStorage.isCustomerTokenValid(cid, token);
     }
 
     @Override
+    public boolean isCustomerCreatedInStorage(String cid){ return tokenStorage.isCustomerCreated(cid); }
+
+    @Override
     public void storageStoreTokens(String cid, TokenSet tokens) {
-        externalStorage.addTokens(cid, tokens);
+        tokenStorage.addTokens(cid, tokens);
     }
 
     @Override
     public void storageConsumeToken(String cid, String token) {
-        externalStorage.removeTokenFromCustomer(cid, token);
+        tokenStorage.removeTokenFromCustomer(cid, token);
     }
 
     @Override
     public void storageAddNewCustomer(String cid, TokenSet tokens) {
-        externalStorage.addNewEntry(cid, tokens);
+        tokenStorage.addNewEntry(cid, tokens);
 
     }
 
-    @Override
-    public ITokenStorage getExternalStorage() {
-        return externalStorage;
-    }
-
+//    @Override
+//    public ITokenStorage getExternalStorage() {
+//        return externalStorage;
+//    }
+//
 
 }
