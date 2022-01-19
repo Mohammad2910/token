@@ -43,6 +43,7 @@ public class TokenStorage implements ITokenStorage{
     @Override
     public boolean isCustomerTokenValid(String cid, String token){
         TokenSet set = tokenHashMap.get(cid);
+        System.out.println("isCustomerTokenValid : " + set.findToken(token));
         return set.findToken(token);
     }
 

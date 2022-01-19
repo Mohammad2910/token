@@ -30,15 +30,28 @@ class TokenManagerTest {
     @Test
     void validateToken() throws TokenNotValidException {
         String cid = "cid1";
-        String token = "token2";
+        String token1 = "token1";
+        String token2 = "token2";
+        String token3 = "token3";
         TokenSet set = new TokenSet();
-        set.addToken("token1");
-        set.addToken(token);
-        set.addToken("token3");
+        set.addToken(token1);
+        set.addToken(token2);
+        set.addToken(token3);
         serviceProvider.getTokenManager().addNewCustomer(cid, set);
-        assertTrue(serviceProvider.getTokenManager().validateToken(cid, token));
-        //token does not match
-        assertThrows(TokenNotValidException.class, () -> serviceProvider.getTokenManager().validateToken(cid, "token4"));
+        assertTrue(serviceProvider.getTokenManager().validateToken(cid, token2));
+    }
+
+    @Test
+    void validateToken_ThrowsTokenNotValidException(){
+        String cid = "cid1";
+        String token1 = "token1";
+        String token2 = "token2";
+        TokenSet set = new TokenSet();
+        set.addToken(token1);
+        set.addToken(token2);
+        String tokenNotAdded = "token3";
+        serviceProvider.getTokenManager().addNewCustomer(cid, set);
+        assertThrows(TokenNotValidException.class, () -> serviceProvider.getTokenManager().validateToken(cid, tokenNotAdded));
     }
 
     @Test
